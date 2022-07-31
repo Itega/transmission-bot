@@ -1,0 +1,24 @@
+---
+version: "2.1"
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - USER=username
+      - PASS=password
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  bot:
+    build: .
+    container_name: transmission-bot
+    env_file: .env
+    environment:
+      TRANSMISSION_HOST: transmission
+    restart: unless-stopped

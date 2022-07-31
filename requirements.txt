@@ -1,0 +1,4 @@
+transmission-rpc~=3.3
+discord.py~=1.7
+Pillow~=9.2
+python-dotenv~=0.20
