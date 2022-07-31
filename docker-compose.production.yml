@@ -1,0 +1,14 @@
+---
+version: "3.9"
+services:
+  transmission_bot:
+    image: ghcr.io/itega/transmission-bot:main
+    container_name: transmission-bot
+    env_file: .env
+    environment:
+      TRANSMISSION_HOST: transmission
+      TRANSMISSION_PORT: 9091
+      BOT_TOKEN: abcdef
+      CHANNEL_ID: 123456
+      IMAGE_CHANNEL_ID: 123123
+    restart: unless-stopped
