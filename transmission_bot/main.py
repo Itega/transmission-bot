@@ -24,6 +24,7 @@ async def on_ready():
     await discord_client.get_channel(CHANNEL_ID).purge()
     await discord_client.get_channel(IMAGE_CHANNEL_ID).purge()
     check_torrents.start()
+    print("Bot ready")
 
 
 @tasks.loop(seconds=CHECK_INTERVAL)

@@ -16,6 +16,7 @@ from config import (
 )
 
 STATUS_COLOR = {
+    "complete": COMPLETE_COLOR,
     "seeding": COMPLETE_COLOR,
     "seed pending": COMPLETE_COLOR,
     "download pending": DOWNLOADING_COLOR,
@@ -61,7 +62,10 @@ async def send_progress(
     client: discord.Client, torrent: Torrent, msg: discord.Message = None
 ):
     img_name = "progress.png"
-    color: discord.Colour = STATUS_COLOR[torrent.status]
+    status = torrent.status
+    if torrent.status != "downloading" and torrent.progress == 100:
+        status = "complete"
+    color: discord.Colour = STATUS_COLOR[status]
     channel: discord.TextChannel = client.get_channel(CHANNEL_ID)
 
     f = create_progress_bar(torrent.progress, color=color.to_rgb())
@@ -70,9 +74,7 @@ async def send_progress(
     embed = discord.Embed(title=torrent.name, colour=color)
     embed.add_field(
         name="Status",
-        value="complete"
-        if torrent.status in ["seeding", "seed pending"]
-        else torrent.status,
+        value=status,
         inline=False,
     )
     embed.add_field(
@@ -107,6 +109,6 @@ async def send_progress(
     return await msg.edit(
         embed=embed,
         delete_after=DELETE_AFTER
-        if torrent.progress == 100 and torrent.status != "downloading"
+        if status == "complete"
         else None,
     )
